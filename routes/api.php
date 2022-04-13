@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware' => ['auth:sanctum', 'cors']], function () {
-    Route::post('/invitation/send', 'API\AuthController@sendInvitation');
+    Route::post('/invitation/send', 'API\AuthController@sendInvitation')->middleware('invitation');
 });
 
 // Set up 'cors' middleware for request methods (POST, GET etc.) and disable http request errors

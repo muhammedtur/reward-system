@@ -77,24 +77,20 @@ class AuthController extends BaseController
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
         ]);
-   
+
         if ($validator->fails()) {
             return $this->handleError($validator->errors());
         }
 
         $invited_user = User::where('email', $request->email)->first();
-        $invitation['email'] = base64_encode(env('APP_KEY').$request->email);
 
         if ($invited_user) {
             return $this->handleError('Invited user already registered!');
         }
 
-        if (Cache::get("auth:invitationEmail:{$invitation['email']}")) {
-            return $this->handleError('You already invited your friend with this email! Please wait about 10 minutes and try again!');
-        }
-
         $invitation['code'] = Str::random(32);
         $invitation['created_user'] = Auth::user()->guid;
+        $invitation['email'] = base64_encode(env('APP_KEY').$request->email);
 
         Cache::put("auth:invitationCode:{$invitation['code']}", $invitation);
         Cache::put("auth:invitationEmail:{$invitation['email']}", true, 600);
