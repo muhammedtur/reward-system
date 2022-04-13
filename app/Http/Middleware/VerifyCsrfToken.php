@@ -12,6 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        // Swagger API Documentation getting csrf error witch sanctum
+        'api/*'
     ];
 }

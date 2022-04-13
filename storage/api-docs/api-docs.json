@@ -1,0 +1,210 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Documentation",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "content": {
+                      "multipart/form-data": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "email": {
+                              "description": "User e-mail.",
+                              "type": "string",
+                              "example": "test@test.com",
+                              "required": true
+                            },
+                            "password": {
+                              "description": "User password",
+                              "type": "string",
+                              "example": "test123456",
+                              "required": true
+                            },
+                            "invitationCode": {
+                              "description": "Invitation Code",
+                              "type": "string",
+                              "example": "2r9UsevONefwkfWm6tRz32BJ3xTSGmRs"
+                            }
+                          }
+                        }
+                      }
+                    }
+                },
+                "summary": "User Register API",
+                "operationId": "ec2a309924760dfb5ba480e78b8d733b",
+                "responses": {
+                    "201": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "bearerToken": {
+                                                    "type": "string",
+                                                    "example": "9|4yh86PSBTQfAnufIefYes4xGJshZYAKEHVw0fxtV"
+                                                }
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User created successfully!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "requestBody": {
+                    "content": {
+                      "multipart/form-data": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "email": {
+                              "description": "User e-mail.",
+                              "type": "string",
+                              "example": "test@test.com",
+                              "required": true
+                            },
+                            "password": {
+                              "description": "User password",
+                              "type": "string",
+                              "example": "test123456",
+                              "required": true
+                            }
+                          }
+                        }
+                      }
+                    }
+                },
+                "summary": "User Login API",
+                "operationId": "ec24dsgdsaui0dfb5ba480e78b8d733b",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "bearerToken": {
+                                                    "type": "string",
+                                                    "example": "9|4yh86PSBTQfAnufIefYes4xGJshZYAKEHVw0fxtV"
+                                                }
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User logged-in!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/invitation/send": {
+            "post": {
+                "security": [
+                    {
+                       "bearerAuth": []
+                    }
+                ],
+                "tags": [
+                    "Invitation"
+                ],
+                "requestBody": {
+                    "content": {
+                      "multipart/form-data": {
+                        "schema": {
+                          "type": "object",
+                          "properties": {
+                            "email": {
+                              "description": "Invited user e-mail.",
+                              "type": "string",
+                              "example": "test@test.com",
+                              "required": true
+                            }
+                          }
+                        }
+                      }
+                    }
+                },
+                "summary": "User Invitation API",
+                "operationId": "ec2asdfsdfsf4ab5ba480e78b8d733b",
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": "true"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invitation code generated successfully!"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+          "bearerAuth": {
+              "type": "http",
+              "scheme":"bearer",
+              "bearerFormat":"JWT"
+          }
+        }
+      },
+    "security": [
+        {  } 
+    ]
+}
