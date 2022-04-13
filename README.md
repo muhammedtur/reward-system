@@ -53,14 +53,6 @@ To run the app:
 php artisan serve --port=80
 ```
 
-## Test
-
-To test the app:
-
-```bash
-php artisan test
-```
-
 ## Documentation
 
 To API scheme documentation:
