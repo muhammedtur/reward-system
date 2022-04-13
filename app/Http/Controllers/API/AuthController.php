@@ -8,9 +8,11 @@ use Illuminate\Support\Str;
 
 use App\Models\User;
 use App\Helpers\UserHelper;
+use App\Mail\SendInvitationMail;
 
 use Cache;
 use Validator;
+use Mail;
 
 class AuthController extends BaseController
 {
@@ -72,9 +74,37 @@ class AuthController extends BaseController
 
     public function sendInvitation(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+   
+        if ($validator->fails()) {
+            return $this->handleError($validator->errors());
+        }
+
+        $invited_user = User::where('email', $request->email)->first();
+        $invitation['email'] = base64_encode(env('APP_KEY').$request->email);
+
+        if ($invited_user) {
+            return $this->handleError('Invited user already registered!');
+        }
+
+        if (Cache::get("auth:invitationEmail:{$invitation['email']}")) {
+            return $this->handleError('You already invited your friend with this email! Please wait about 10 minutes and try again!');
+        }
+
         $invitation['code'] = Str::random(32);
-        $invitation['created_user'] = "28b00830-bb08-11ec-ac34-41364475c939";
+        $invitation['created_user'] = Auth::user()->guid;
+
         Cache::put("auth:invitationCode:{$invitation['code']}", $invitation);
-        return $this->handleResponse($invitation, 'Invitation code generated successfully!');
+        Cache::put("auth:invitationEmail:{$invitation['email']}", true, 600);
+
+        Mail::to($request->email)->queue(new SendInvitationMail(
+            __('emails.invitation_title'),
+            __('emails.invitation_msg', ['application_name' => env('APP_NAME')]),
+            __('emails.invitation_code', ['invitation_code' => $invitation['code']])
+        ));
+
+        return $this->handleResponse('', 'Invitation code generated successfully!');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\User;
+use App\Mail\WelcomeMail;
 
 use Uuid;
 use Mail;
@@ -28,6 +29,9 @@ class UserObserver
      */
     public function created(User $user)
     {
-        //Mail::to($user->email)->queue(new WelcomeMail($user));
+        Mail::to($user->email)->queue(new WelcomeMail(
+            __('emails.welcome_title'),
+            __('emails.welcome_msg', ['application_name' => env('APP_NAME')])
+        ));
     }
 }

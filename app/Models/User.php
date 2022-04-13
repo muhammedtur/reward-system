@@ -46,4 +46,10 @@ class User extends Authenticatable
     ];
 
     protected $dates = ['created_at', 'updated_at', 'email_verified_at'];
+
+    //SCOPES
+    public function scopeOfReferrer($query, $referrer_id)
+    {
+        return $query->where('id', $referrer_id);
+    }
 }

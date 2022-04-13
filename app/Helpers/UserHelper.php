@@ -21,6 +21,7 @@ class UserHelper
             if ($referral_user) {
                 $user->referrer = $referral_user->id;
                 $user->wallet = 30.00;
+                $referral_user->increment('wallet', 50);
                 Cache::forget("auth:invitationCode:{$invitationCode}");
                 return $user;
             }
