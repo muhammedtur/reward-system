@@ -92,9 +92,12 @@ class AuthController extends BaseController
         $invitation['created_user'] = Auth::user()->guid;
         $invitation['email'] = base64_encode(env('APP_KEY').$request->email);
 
+        // Cached invitation code for checking invited user
         Cache::put("auth:invitationCode:{$invitation['code']}", $invitation);
+        // Cached invitation email for ignore multiple requests. Cache time is 10 minutes after that will be removed
         Cache::put("auth:invitationEmail:{$invitation['email']}", true, 600);
 
+        // Send email to invited user with invitation code
         Mail::to($request->email)->queue(new SendInvitationMail(
             __('emails.invitation_title'),
             __('emails.invitation_msg', ['application_name' => env('APP_NAME')]),

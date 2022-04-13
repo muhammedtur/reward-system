@@ -13,9 +13,11 @@ class UserHelper
 
     public static function checkInvitation($invitationCode, &$user)
     {
+        // Checking invitation code
         $invitation = Cache::get("auth:invitationCode:{$invitationCode}");
 
         if ($invitation) {
+            // Checking invitation user is exists
             $referral_user = User::where('guid', $invitation['created_user'])->first();
 
             if ($referral_user) {
