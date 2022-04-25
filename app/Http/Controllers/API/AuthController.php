@@ -47,7 +47,7 @@ class AuthController extends BaseController
             return $this->handleResponse($success, 'User created successfully!');
         }
 
-        return response()->json(['status' => false, 'message' => 'Error occured while sign up!'], 400);
+        return $this->handleError('Error occured while sign up!');
     }
 
     public function login(Request $request)
