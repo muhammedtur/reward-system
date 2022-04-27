@@ -18,12 +18,12 @@ class UserHelper
 
         if ($invitation) {
             // Checking invitation user is exists
-            $referral_user = User::where('guid', $invitation['created_user'])->first();
+            $referralUser = User::where('guid', $invitation['created_user'])->first();
 
-            if ($referral_user) {
-                $user->referrer = $referral_user->id;
+            if ($referralUser) {
+                $user->referrer = $referralUser->id;
                 $user->wallet = 30.00;
-                $referral_user->increment('wallet', 50);
+                $referralUser->increment('wallet', 50);
                 Cache::forget("auth:invitationCode:{$invitationCode}");
             }
         }
