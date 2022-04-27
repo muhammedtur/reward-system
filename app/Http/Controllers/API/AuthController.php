@@ -52,24 +52,20 @@ class AuthController extends BaseController
 
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required'
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
-   
-        if ($validator->fails()) {
-            return $this->handleError($validator->errors());
-        }
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (Auth::attempt($credentials)) {
             $auth = Auth::user();
 
             $success['bearerToken'] =  $auth->createToken('LaravelSanctumAuth')->plainTextToken;
 
             return $this->handleResponse($success, 'User logged-in!');
-        } else {
-            return $this->handleError('Unauthorized');
         }
+
+        return $this->handleError('The provided credentials do not match our records.');
     }
 
     public function sendInvitation(Request $request)
